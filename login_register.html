@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login / Register</title>
+    <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        body {
+            background: #1c1f2a;
+            font-family: 'Segoe UI', sans-serif;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            color: #333;
+            width: 350px;
+            position: relative;
+        }
+        .popup-message {
+            position: absolute;
+            top: -60px;
+            left: 0;
+            right: 0;
+            margin: auto;
+            padding: 10px;
+            background-color: #ffdddd;
+            border: 1px solid #cc0000;
+            color: #cc0000;
+            border-radius: 6px;
+            text-align: center;
+            animation: fadeOut 4s forwards;
+        }
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { opacity: 0; display: none; }
+        }
+        h2 {
+            text-align: center;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        input {
+            margin-bottom: 15px;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+        .password-container {
+            position: relative;
+            margin-bottom: 15px;
+        }
+        .password-container input {
+            margin-bottom: 0;
+            padding-right: 90px;
+        }
+        .password-toggle {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            color: #666;
+            padding: 0;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .password-toggle:hover {
+            color: #333;
+        }
+        button[type="submit"] {
+            background: #1c1f2a;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .toggle {
+            text-align: center;
+            margin-top: 10px;
+        }
+        .toggle a {
+            color: #1c1f2a;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2 id="formTitle">Login</h2>
+
+    <div class="popup-message" id="errorPopup" style="display: none;"></div>
+
+    <form id="authForm" method="POST" action="login.php">
+        <input type="text" id="name" name="name" placeholder="Full Name" style="display: none;">
+        <input type="email" name="email" placeholder="Email" required>
+        
+        <div class="password-container">
+            <input type="password" id="password" name="password" placeholder="Password" required>
+            <button type="button" class="password-toggle" onclick="togglePassword()">👁️</button>
+        </div>
+        
+        <button type="submit" name="login_submit">Login</button>
+    </form>
+
+    <div class="toggle">
+        <span id="toggleText">Don't have an account? <a href="#" onclick="switchToRegister()">Register</a></span>
+    </div>
+</div>
+
+<script>
+    function togglePassword() {
+        const passwordInput = document.getElementById('password');
+        const toggleButton = document.querySelector('.password-toggle');
+        
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            toggleButton.textContent = '🙈';
+        } else {
+            passwordInput.type = 'password';
+            toggleButton.textContent = '👁️';
+        }
+    }
+
+    function switchToRegister() {
+        document.getElementById('formTitle').textContent = 'Register';
+        document.getElementById('authForm').action = 'register.php';
+        const button = document.querySelector('button[type="submit"]');
+        button.textContent = 'Register';
+        button.name = 'register_submit';
+        document.getElementById('name').style.display = 'block';
+        document.getElementById('toggleText').innerHTML = 'Already have an account? <a href="#" onclick="switchToLogin()">Login</a>';
+    }
+    
+    function switchToLogin() {
+        document.getElementById('formTitle').textContent = 'Login';
+        document.getElementById('authForm').action = 'login.php';
+        const button = document.querySelector('button[type="submit"]');
+        button.textContent = 'Login';
+        button.name = 'login_submit';
+        document.getElementById('name').style.display = 'none';
+        document.getElementById('toggleText').innerHTML = 'Don\'t have an account? <a href="#" onclick="switchToRegister()">Register</a>';
+    }
+
+    // Show error message from URL parameter
+    const params = new URLSearchParams(window.location.search);
+    const error = params.get('error');
+
+    if (error) {
+        const popup = document.getElementById('errorPopup');
+        let message = '';
+        
+        if (error === 'invalid') {
+            message = '❌ Invalid email or password. Please try again!';
+        } else if (error === 'exists') {
+            message = '⚠️ This account already exists. Please try logging in.';
+        } else if (error === 'fail') {
+            message = '⚠️ Something went wrong. Please try again later.';
+        }
+        
+        if (message) {
+            popup.textContent = message;
+            popup.style.display = 'block';
+            
+            setTimeout(() => {
+                popup.style.display = 'none';
+            }, 4000);
+        }
+
+        // Clean the URL after displaying error
+        window.history.replaceState({}, document.title, window.location.pathname);
+    }
+</script>
+
+</body>
+</html>
