@@ -56,8 +56,8 @@ A modern, responsive e-commerce web application designed to support local busine
 2. **Database Setup**
 ```sql
 -- Create the main database
-CREATE DATABASE IF NOT EXISTS ecommerce_db;
-USE ecommerce_db;
+CREATE DATABASE IF NOT EXISTS localmart;
+USE localmart;
 
 -- Users Table
 CREATE TABLE IF NOT EXISTS users (
