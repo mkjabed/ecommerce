@@ -215,12 +215,15 @@ localmart/
 ## Screenshots
 
 ![Homepage](screenshots/homepage.png)
+
 *Homepage with product catalog and search functionality*
 
 ![Cart Modal](screenshots/cart.png)
+
 *Shopping cart with quantity controls*
 
 ![Checkout Form](screenshots/checkout.png)
+
 *Order placement form with customer details*
 
 ---
