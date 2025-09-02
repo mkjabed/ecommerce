@@ -1,7 +1,7 @@
 <?php
 // config.php - Database connection
 $host = 'localhost';
-$dbname = 'ecommerce_db';
+$dbname = 'localmart';
 $username = 'root';  // Your MySQL username
 $password = '';      // Your MySQL password
 
