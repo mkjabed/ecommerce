@@ -154,6 +154,7 @@ CREATE TABLE IF NOT EXISTS contact_messages (
     submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     status       ENUM('unread', 'read', 'replied') DEFAULT 'unread'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+ ```
 
 
 3. **Configure Database Connection**
