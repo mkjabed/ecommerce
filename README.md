@@ -54,15 +54,12 @@ A modern, responsive e-commerce web application designed to support local busine
    ```
 
 2. **Database Setup**
-   ```sql
- -- Create the main database if it doesn't exist
+```sql
+-- Create the main database
 CREATE DATABASE IF NOT EXISTS ecommerce_db;
 USE ecommerce_db;
 
--- ===============================
 -- Users Table
--- Stores information about registered users (customers/admins)
--- ===============================
 CREATE TABLE IF NOT EXISTS users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
@@ -72,10 +69,7 @@ CREATE TABLE IF NOT EXISTS users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- ===============================
 -- Products Table
--- Stores product details (name, price, stock, description, image)
--- ===============================
 CREATE TABLE IF NOT EXISTS products (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
@@ -86,10 +80,7 @@ CREATE TABLE IF NOT EXISTS products (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- ===============================
 -- Orders Table
--- Stores order details (customer info, payment, status, linked to user)
--- ===============================
 CREATE TABLE IF NOT EXISTS orders (
     id INT AUTO_INCREMENT PRIMARY KEY,
     customer_name VARCHAR(255) NOT NULL,
@@ -106,55 +97,27 @@ CREATE TABLE IF NOT EXISTS orders (
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- ===============================
 -- Order Items Table
--- Stores the individual products included in each order
--- (Linked to both orders and products)
--- ===============================
 CREATE TABLE IF NOT EXISTS order_items (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    order_id INT,
-    product_id INT,
-    product_name VARCHAR(255) NOT NULL,
+    order_id INT NOT NULL,
+    product_id INT NOT NULL,
     quantity INT NOT NULL,
     price DECIMAL(10,2) NOT NULL,
     FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE,
-    FOREIGN KEY (product_id) REFERENCES products(id)
+    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- ===============================
--- Insert Sample Products
--- Example items added into the products table
--- ===============================
-INSERT INTO products (name, price, description, image, stock, created_at) VALUES
-('Rainy 75 Keyboard', 129.99, 'Best-selling Audiophile Keyboard', 'rainy75.webp', 50, NOW()),
-('Razor Pro Click', 98.00, 'Ultra-precise productivity mouse', 'razor-pro-click.jpg', 30, NOW()),
-('Herman Miller Embody', 1830.00, 'Premium chair for all-day comfort', 'embody.jpg', 100, NOW()),
-('Kfien Delci AE', 91.00, 'Best-in-class Audiophile Grade IEM', 'kfine.webp', 75, NOW()),
-('PS5 Slim', 449.00, 'Next-gen gaming beast', 'ps5.webp', 40, NOW()),
-('MacBook Pro M4 Pro', 1999.00, 'XDR display, M4 power, all-day battery', 'mac.avif', 25, NOW());
-
--- ===============================
--- Insert Sample User
--- Example customer added into the users table
--- ===============================
-INSERT INTO users (name, email, password, role, created_at) VALUES
-('Mustofa Kamal Jabed', 'jabed.mu.cse@gmail.com', '$2y$10$j3Dzv2MfzW95rasoZKJ/SewFIxpemfcDdt8bRDN3QiLm4TH1txMiK', 'customer', NOW());
-
--- ===============================
 -- Contact Messages Table
--- Stores messages sent by users via the contact form
--- ===============================
 CREATE TABLE IF NOT EXISTS contact_messages (
-    id           INT AUTO_INCREMENT PRIMARY KEY,
-    name         VARCHAR(100) NOT NULL,
-    email        VARCHAR(100) NOT NULL,
-    subject      VARCHAR(255) NOT NULL,
-    message      TEXT NOT NULL,
-    submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    status       ENUM('unread', 'read', 'replied') DEFAULT 'unread'
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    subject VARCHAR(255),
+    message TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
- ```
+```
 
 
 3. **Configure Database Connection**
